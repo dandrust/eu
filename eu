@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require_relative 'eu.rb'
+
+EU.start(*ARGV)
