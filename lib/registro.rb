@@ -14,4 +14,4 @@ module EU
 end
 
 require_relative 'http_service'
-require_relative 'harvest'
+#require_relative 'harvest'
