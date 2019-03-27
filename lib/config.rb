@@ -4,7 +4,7 @@ require 'yaml'
 
 module EU
   class Config
-    DOTFILE = File.join(Dir.home, '.eu')
+    FILE = File.join(EU.path, 'config')
 
     private_class_method :new
 
@@ -36,28 +36,30 @@ module EU
     private
 
     def reload_config
-      @config = YAML.load_file(DOTFILE)
-      @config.keys.each do |key|
-        instance_variable_set "@#{key}", @config[key]
-        self.class.attr_reader key.to_sym
+      if @config = YAML.load_file(FILE)
+        @config.keys.each do |key|
+          instance_variable_set "@#{key}", @config[key]
+          self.class.attr_reader key.to_sym
+        end
+      else
+        @config = {}
       end
     end
 
     def write_config
       return unless dirty
-      File.write(DOTFILE, config.to_yaml)
+      File.write(FILE, config.to_yaml)
       @dirty = false
     end
 
     def dotfile_exists?
-      File.exist?(DOTFILE)
+      File.exist?(FILE)
     end
 
     def ensure_dotfile
-      File.write(DOTFILE, "") unless dotfile_exists?
+      File.write(FILE, "") unless dotfile_exists?
     end
 
   end
 end
-
 
